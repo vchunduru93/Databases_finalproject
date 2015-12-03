@@ -1,4 +1,8 @@
-# Text parser
+''' 
+Course Eval text  parser
+Takes in filename to course eval raw text file, outputs each course eval separated by line breaks.
+
+'''
 
 import sys
 
