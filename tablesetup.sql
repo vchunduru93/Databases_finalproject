@@ -1,36 +1,48 @@
-drop table Professor;
+drop table IF EXISTS Professor;
 create table Professor (
-  pid INTEGER AUTOINCREMENT,
-  fname VARCHAR(15),
-  lname VARCHAR(15)
+  pid INTEGER AUTO_INCREMENT PRIMARY KEY,
+  fname VARCHAR(15) NOT NULL,
+  lname VARCHAR(15) NOT NULL
 );
 
-drop table Department;
+drop table IF EXISTS Department;
 create table Department (
-  dno INTEGER,
-  dname VARCHAR(25)
+  dno INTEGER NOT NULL PRIMARY KEY,
+  dname VARCHAR(25) NOT NULL
 );
 
-drop table Department_affiliation;
+drop table IF EXISTS Department_affiliation;
 create table Department_affiliation (
-  pid INTEGER,
-  dno INTEGER,
+  pid INTEGER NOT NULL,
+  dno INTEGER NOT NULL,
+  FOREIGN KEY (pid)
+    REFERENCES Professor(pid),
+  FOREIGN KEY (dno)
+    REFERENCES Department(dno)
 );
 
-drop table Course;
+drop table IF EXISTS Course;
 create table Course (
-  dno INTEGER,
-  cno INTEGER,
-  cname VARCHAR(40)
+  dno INTEGER NOT NULL,
+  cno INTEGER NOT NULL PRIMARY KEY,
+  cname VARCHAR(40) NOT NULL,
+  FOREIGN KEY (dno)
+    REFERENCES Department(dno)
 );
 
-drop table Course_instance;
+drop table IF EXISTS Course_instance;
 create table Course_instance (
-  dno INTEGER,
-  cno INTEGER,
-  semester VARCHAR(1),
-  year VARCHAR(4),
-  pid INTEGER,
-  rating FLOAT,
-  summary TEXT
+  dno INTEGER NOT NULL,
+  cno INTEGER NOT NULL,
+  semester VARCHAR(1) NOT NULL,
+  year VARCHAR(4) NOT NULL,
+  pid INTEGER NOT NULL,
+  rating FLOAT NOT NULL,
+  summary TEXT NOT NULL,
+  FOREIGN KEY (dno)
+    REFERENCES Department(dno),
+  FOREIGN KEY (cno)
+    REFERENCES Course(cno),
+  FOREIGN KEY (pid)
+    REFERENCES Professor(pid)
 );
