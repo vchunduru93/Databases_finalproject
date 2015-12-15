@@ -6,11 +6,10 @@ Takes in filename to course eval raw text file, outputs each course eval separat
 
 import sys
 
-def main():
-
+def removePageBreaks(fname):
 	# Pass 1: remove page breaks
 	
-	f = open(sys.argv[1], 'r')
+	f = open(fname, 'r')
 	text = []
 	c = 0
 
@@ -25,9 +24,9 @@ def main():
 
 	f.close()
 
+	return text
 
-	# Pass 2: remove preambles
-
+def removePreambles(text):
 	text2 = []
 	c = 0
 	
@@ -41,8 +40,9 @@ def main():
 				c = 0
 			else:
 				text2.append(line)
+	return text2
 
-
+def splitCourseEvals(text2):
 	# Pass 3: split each course eval up
 
 	evals = []
@@ -56,6 +56,14 @@ def main():
 	evals.append(buff)
 	# remove the first element which is empty
 	evals.pop(0)
+
+	return evals
+
+def main():
+
+	text = removePageBreaks(sys.argv[1])
+	text2 = removePreambles(text)
+	evals = splitCourseEvals(text2)
 	
 	for evaluation in evals:
 		print(evaluation)
