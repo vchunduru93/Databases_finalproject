@@ -1,5 +1,5 @@
 Order of Operations for inserting course evaluations:
-1) Extract professor Fname and Lname and insert into PROFESSOR table (NOTE: do this only if course does not already exist)
+1) Extract professor Fname and Lname and insert into PROFESSOR table (NOTE: do this only if professor does not already exist)
 2) Query for PID from PROFESSOR table
 3) Extract DNO, CNO, Semester, Year, Rating, Summary and insert along with PID into COURSE_INSTANCE table
 4) Insert PID and DNO into DEPARTMENT_AFFILIATION table (NOTE: this can be done multiple times because some professors are cross-listed)
