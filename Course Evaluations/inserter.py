@@ -8,10 +8,13 @@ def insert(evals, semester, year):
 	                              database='cs41515_vsoonto1_db')
 
 	# Extract the features from each eval
-	# for evaluation in evals:
-	dno, cno, cname, p_fname, p_lname,rating,summary = extract(evals[0])
-	pid = insertProfessor(cnx,p_fname,p_lname)
-	insertCourseInstance(cnx,dno,cno,semester,year,pid,rating,summary)
+	for evaluation in evals:
+		dno, cno, cname, p_fname, p_lname,rating,summary = extract(evaluation)
+		pid = insertProfessor(cnx,p_fname,p_lname)
+		insertCourseInstance(cnx,dno,cno,semester,year,pid,rating,summary)
+		insertCourse(cnx,dno,cno,cname)
+		insertDepartmentAffiliation(cnx,pid,dno)
+
 
 	cnx.close()
 
@@ -37,12 +40,12 @@ def extract(evaluation):
 
 def insertProfessor(cnx,fname,lname):
 	cursor = cnx.cursor()
-	add_professor = ("INSERT IGNORE INTO Professor "
+	add_p = ("INSERT IGNORE INTO Professor "
                "(fname, lname) "
                "VALUES (%s, %s)")
-	data_professor = (fname,lname)
+	data_p = (fname,lname)
 	# Insert new Professor
-	cursor.execute(add_professor,data_professor)
+	cursor.execute(add_p,data_p)
 	cnx.commit()
 
 	query = ("SELECT pid FROM Professor "
@@ -60,8 +63,32 @@ def insertCourseInstance(cnx,dno,cno,semester,year,pid,rating,summary):
                "(dno,cno,semester,year,pid,rating,summary) "
                "VALUES (%s, %s, %s, %s, %s, %s, %s)")
 	data_ci = (dno,cno,semester,year,pid,rating,summary)
-	# Insert new Professor
+	# Insert new Course Instance
 	cursor.execute(add_ci,data_ci)
+	cnx.commit()
+
+	cursor.close()
+
+def insertCourse(dno,cno,cname):
+	cursor = cnx.cursor()
+	add_c = ("INSERT IGNORE INTO  "
+               "(dno,cno,cname) "
+               "VALUES (%s, %s, %s)")
+	data_c = (dno,cno,cname)
+	# Insert Course
+	cursor.execute(add_c,data_c)
+	cnx.commit()
+
+	cursor.close()
+
+def insertDepartmentAffiliation(pid,dno):
+	cursor = cnx.cursor()
+	add_da = ("INSERT INTO  "
+               "(pid,dno) "
+               "VALUES (%s, %s)")
+	data_da = (pid,dno)
+	# Insert Department Affiliation
+	cursor.execute(add_da,data_da)
 	cnx.commit()
 
 	cursor.close()
