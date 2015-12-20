@@ -5,7 +5,7 @@ Takes in filename to course eval raw text file, outputs each course eval separat
 '''
 
 import sys
-# import inserter
+import inserter
 
 def removePageBreaks(fname):
 	# Pass 1: remove page breaks
@@ -72,7 +72,7 @@ def main():
 	semester,year = extractTiming(text)
 	text2 = removePreambles(text)
 	evals = splitCourseEvals(text2)
-	# inserter.insert(evals, semester, year)
+	inserter.insert(evals, semester, year)
 	
 
 

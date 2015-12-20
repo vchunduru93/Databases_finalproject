@@ -1,15 +1,15 @@
 drop table IF EXISTS Professor;
 create table Professor (
-  pid INTEGER AUTO_INCREMENT,
+  pid INTEGER AUTO_INCREMENT PRIMARY KEY,
   fname VARCHAR(15) NOT NULL,
   lname VARCHAR(15) NOT NULL,
-  PRIMARY KEY (pid, fname, lname)
+  UNIQUE (fname, lname)
 );
 
 drop table IF EXISTS Department;
 create table Department (
   dno INTEGER NOT NULL PRIMARY KEY,
-  dname VARCHAR(25) NOT NULL
+  dname VARCHAR(50) NOT NULL
 );
 
 drop table IF EXISTS Department_affiliation;
@@ -25,11 +25,11 @@ create table Department_affiliation (
 drop table IF EXISTS Course;
 create table Course (
   dno INTEGER NOT NULL,
-  cno INTEGER NOT NULL,
+  cno INTEGER NOT NULL PRIMARY KEY,
   cname VARCHAR(40) NOT NULL,
   FOREIGN KEY (dno)
     REFERENCES Department(dno),
-  PRIMARY KEY (dno, cno)
+  UNIQUE (dno, cno)
 );
 
 drop table IF EXISTS Course_instance;

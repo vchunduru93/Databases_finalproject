@@ -11,7 +11,7 @@ def insert(evals, semester, year):
 	# for evaluation in evals:
 	dno, cno, cname, p_fname, p_lname,rating,summary = extract(evals[1])
 	pid = insertProfessor(cnx,p_fname,p_lname)
-
+	print("pid",pid)
 
 	cnx.close()
 
@@ -45,7 +45,7 @@ def extract(evaluation):
 	# 		rating,'\n',
 	# 		summary,'\n\n')
 
-def insertProfessor(cursor,fname,lname):
+def insertProfessor(cnx,fname,lname):
 	cursor = cnx.cursor()
 	add_professor = ("INSERT IGNORE INTO Professor "
                "(fname, lname) "
@@ -58,9 +58,7 @@ def insertProfessor(cursor,fname,lname):
 	query = ("SELECT pid FROM Professor "
          	 "WHERE fname=%s AND lname=%s")
 	cursor.execute(query, (fname,lname))
-	for (p) in cursor:
-		pid = p
-
+	pid = cursor.fetchone()[0]
 
 	cursor.close()
 
