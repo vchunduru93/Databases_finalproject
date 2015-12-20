@@ -1,0 +1,9 @@
+python cleardb.py
+python parser.py rawtext/Summary_of_Student_Comments_for_Fall_2012_Courses.txt
+python parser.py rawtext/Summary_of_Student_Comments_for_Fall_2013_Courses.txt
+python parser.py rawtext/Summary_of_Student_Comments_for_Fall_2014_Courses.txt
+python parser.py rawtext/Summary_of_Student_Comments_for_Spring_2012_Courses.txt
+python parser.py rawtext/Summary_of_Student_Comments_for_Spring_2013_Courses.txt
+python parser.py rawtext/Summary_of_Student_Comments_for_Spring_2014_Courses.txt
+python parser.py rawtext/Summary_of_Student_Comments_for_Spring_2015_Courses.txt
+
