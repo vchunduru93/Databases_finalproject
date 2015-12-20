@@ -9,9 +9,9 @@ def insert(evals, semester, year):
 
 	# Extract the features from each eval
 	# for evaluation in evals:
-	dno, cno, cname, p_fname, p_lname,rating,summary = extract(evals[1])
+	dno, cno, cname, p_fname, p_lname,rating,summary = extract(evals[0])
 	pid = insertProfessor(cnx,p_fname,p_lname)
-	print("pid",pid)
+	insertCourseInstance(cnx,dno,cno,semester,year,pid,rating,summary)
 
 	cnx.close()
 
@@ -35,16 +35,6 @@ def extract(evaluation):
 
 	return dno, cno, cname, p_fname, p_lname,rating,summary
 
-	# print(	dno,
-	# 		cno,
-	# 		semester,
-	# 		year,
-	# 		cname,
-	# 		p_lname,
-	# 		p_fname,
-	# 		rating,'\n',
-	# 		summary,'\n\n')
-
 def insertProfessor(cnx,fname,lname):
 	cursor = cnx.cursor()
 	add_professor = ("INSERT IGNORE INTO Professor "
@@ -63,3 +53,15 @@ def insertProfessor(cnx,fname,lname):
 	cursor.close()
 
 	return pid
+
+def insertCourseInstance(cnx,dno,cno,semester,year,pid,rating,summary):
+	cursor = cnx.cursor()
+	add_ci = ("INSERT INTO Course_instance "
+               "(dno,cno,semester,year,pid,rating,summary) "
+               "VALUES (%s, %s, %s, %s, %s, %s, %s)")
+	data_ci = (dno,cno,semester,year,pid,rating,summary)
+	# Insert new Professor
+	cursor.execute(add_ci,data_ci)
+	cnx.commit()
+
+	cursor.close()
