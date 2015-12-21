@@ -9,13 +9,16 @@ def insert(evals, semester, year):
 
 	# Extract the features from each eval
 	for evaluation in evals:
-		dno, cno, cname, p_fname, p_lname,rating,summary = extract(evaluation)
+		try:
+			dno, cno, cname, p_fname, p_lname,rating,summary = extract(evaluation)
+		except:
+			continue
 		pid = insertProfessor(cnx,p_fname,p_lname)
 		insertCourseInstance(cnx,dno,cno,semester,year,pid,rating,summary)
 		insertCourse(cnx,dno,cno,cname)
 		insertDepartmentAffiliation(cnx,pid,dno)
 
-
+	print('Finished ' + semester + year);
 	cnx.close()
 
 def extract(evaluation):
@@ -25,6 +28,7 @@ def extract(evaluation):
 	# extract cname
 	cname = lines[1]
 	# extract p_fname, p_lname
+#	print(lines[2])
 	p_fname,p_lname = lines[2].split()
 	# extract rating
 	rating = lines[3].split(':')[-1].strip()
@@ -59,7 +63,7 @@ def insertProfessor(cnx,fname,lname):
 
 def insertCourseInstance(cnx,dno,cno,semester,year,pid,rating,summary):
 	cursor = cnx.cursor()
-	add_ci = ("INSERT INTO Course_instance "
+	add_ci = ("INSERT IGNORE INTO Course_instance "
                "(dno,cno,semester,year,pid,rating,summary) "
                "VALUES (%s, %s, %s, %s, %s, %s, %s)")
 	data_ci = (dno,cno,semester,year,pid,rating,summary)
@@ -69,9 +73,9 @@ def insertCourseInstance(cnx,dno,cno,semester,year,pid,rating,summary):
 
 	cursor.close()
 
-def insertCourse(dno,cno,cname):
+def insertCourse(cnx,dno,cno,cname):
 	cursor = cnx.cursor()
-	add_c = ("INSERT IGNORE INTO  "
+	add_c = ("INSERT IGNORE INTO Course "
                "(dno,cno,cname) "
                "VALUES (%s, %s, %s)")
 	data_c = (dno,cno,cname)
@@ -81,9 +85,9 @@ def insertCourse(dno,cno,cname):
 
 	cursor.close()
 
-def insertDepartmentAffiliation(pid,dno):
+def insertDepartmentAffiliation(cnx,pid,dno):
 	cursor = cnx.cursor()
-	add_da = ("INSERT INTO  "
+	add_da = ("INSERT IGNORE INTO Department_affiliation "
                "(pid,dno) "
                "VALUES (%s, %s)")
 	data_da = (pid,dno)

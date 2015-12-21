@@ -74,7 +74,8 @@ def main():
 	evals = splitCourseEvals(text2)
 	inserter.insert(evals, semester, year)
 	
-
+#	for evaluation in evals:
+#		print(evaluation)
 
 main()
 
